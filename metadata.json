@@ -1,0 +1,7 @@
+{
+  "name": "Gibbs Towing & Recovery Luxury Portal",
+  "description": "A high-end, interactive web presence for Gibbs Towing & Recovery, featuring real-time dispatch assistance, professional animations, and premium service showcase.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
