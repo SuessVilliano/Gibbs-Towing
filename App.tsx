@@ -32,6 +32,15 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void }> = ({ darkMod
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setMobileOpen(false);
+  };
+
   return (
     <nav className={`fixed top-0 w-full z-40 transition-all duration-300 ${scrolled ? 'bg-white/90 dark:bg-black/90 backdrop-blur-md py-3 shadow-lg' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
@@ -46,9 +55,9 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void }> = ({ darkMod
         </div>
 
         <div className={`hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest items-center ${scrolled ? 'text-zinc-800 dark:text-zinc-200' : 'text-zinc-200'}`}>
-          <a href="#about" className="hover:text-red-600 transition-colors">About</a>
-          <a href="#services" className="hover:text-red-600 transition-colors">Services</a>
-          <a href="#locations" className="hover:text-red-600 transition-colors">Locations</a>
+          <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="hover:text-red-600 transition-colors">About</a>
+          <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="hover:text-red-600 transition-colors">Services</a>
+          <a href="#locations" onClick={(e) => handleNavClick(e, 'locations')} className="hover:text-red-600 transition-colors">Locations</a>
           
           <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-white/10 transition-colors">
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
@@ -72,9 +81,9 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void }> = ({ darkMod
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-white/10 p-6 flex flex-col gap-6 animate-in slide-in-from-top-4 shadow-2xl">
-          <a href="#about" onClick={() => setMobileOpen(false)} className="text-lg font-brand text-zinc-900 dark:text-white">About Us</a>
-          <a href="#services" onClick={() => setMobileOpen(false)} className="text-lg font-brand text-zinc-900 dark:text-white">Services</a>
-          <a href="#locations" onClick={() => setMobileOpen(false)} className="text-lg font-brand text-zinc-900 dark:text-white">Locations</a>
+          <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="text-lg font-brand text-zinc-900 dark:text-white">About Us</a>
+          <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-lg font-brand text-zinc-900 dark:text-white">Services</a>
+          <a href="#locations" onClick={(e) => handleNavClick(e, 'locations')} className="text-lg font-brand text-zinc-900 dark:text-white">Locations</a>
           <a href={`tel:${BRAND.phone}`} className="bg-red-700 text-center py-4 rounded-xl font-bold text-white uppercase tracking-widest shadow-lg">
             Call Dispatch Now
           </a>
@@ -85,13 +94,22 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void }> = ({ darkMod
 };
 
 const Hero: React.FC = () => {
+  const scrollToServices = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const element = document.getElementById('services');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-zinc-900">
+        {/* Updated to a reliable Red Heavy Duty Truck image */}
         <img 
-          src="https://images.unsplash.com/photo-1626847037657-fd3622613ce3?q=80&w=1920&auto=format&fit=crop" 
-          alt="Gibbs Towing Luxury Truck" 
+          src="https://images.unsplash.com/photo-1605218439506-6df6c91a0300?q=80&w=1920&auto=format&fit=crop" 
+          alt="Gibbs Heavy Duty Red Truck" 
           className="w-full h-full object-cover"
         />
         {/* Dark Mode Gradient */}
@@ -105,12 +123,12 @@ const Hero: React.FC = () => {
             <p className="text-red-700 dark:text-red-600 font-bold uppercase tracking-[0.3em] text-sm">Premier Recovery Solutions</p>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-brand font-black italic tracking-tighter leading-[0.9] uppercase text-zinc-900 dark:text-white">
-            Luxury Heavy <br />
-            <span className="text-gradient-red">Duty Recovery</span>
+          <h1 className="text-5xl md:text-7xl font-brand font-black italic tracking-tighter leading-[0.9] uppercase text-zinc-900 dark:text-white">
+            Heavy Duty <br />
+            <span className="text-gradient-red">Commercial Recovery</span>
           </h1>
 
-          <p className="text-zinc-700 dark:text-zinc-400 text-lg md:text-xl font-light leading-relaxed max-w-xl bg-white/30 dark:bg-transparent p-4 dark:p-0 backdrop-blur-sm dark:backdrop-blur-none rounded-lg">
+          <p className="text-zinc-700 dark:text-zinc-200 text-lg md:text-xl font-light leading-relaxed max-w-xl bg-white/30 dark:bg-black/50 p-4 rounded-lg backdrop-blur-sm">
             Atlanta's most trusted elite towing fleet. Providing white-glove service for heavy-duty commercial, rotators, and specialized cargo.
           </p>
 
@@ -123,6 +141,7 @@ const Hero: React.FC = () => {
             </a>
             <a 
               href="#services"
+              onClick={scrollToServices}
               className="border border-zinc-900 dark:border-white/20 hover:bg-zinc-900 hover:text-white dark:hover:bg-white/10 text-zinc-900 dark:text-white px-10 py-5 rounded-sm font-brand font-black text-xl italic tracking-tight uppercase flex items-center justify-center gap-3 transition-all"
             >
               Our Fleet <ChevronRight />
@@ -146,10 +165,10 @@ const About: React.FC = () => {
       <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
         <div className="relative group">
           <div className="aspect-[4/5] bg-zinc-200 dark:bg-zinc-900 rounded-sm overflow-hidden relative shadow-2xl">
-            {/* Using a placeholder for the company truck/owner interaction */}
+            {/* Using a placeholder since actual image is missing */}
             <img 
-              src="https://images.unsplash.com/photo-1594960787369-232cb97970f5?q=80&w=1000&auto=format&fit=crop" 
-              alt="James Gibbs - Gibbs Towing Truck" 
+              src="https://placehold.co/400x500/E31B23/FFFFFF?text=James+Gibbs" 
+              alt="James Gibbs - Owner" 
               className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
@@ -179,7 +198,7 @@ const About: React.FC = () => {
               Founded by <strong>James Gibbs</strong>, Gibbs Towing & Recovery stands as a beacon of reliability in the Atlanta metropolitan area and beyond. We don't just move vehicles; we rescue businesses and livelihoods.
             </p>
             <p>
-              Our luxury approach means we treat every client with the utmost professionalism. Whether it's a multi-million dollar cargo load or a critical tractor-trailer jumpstart, we arrive on scene with the right equipment and the right attitude.
+              Our professional approach means we treat every client with the utmost respect. Whether it's a multi-million dollar cargo load or a critical tractor-trailer jumpstart, we arrive on scene with the right equipment and the right attitude.
             </p>
           </div>
 
@@ -289,6 +308,14 @@ const Locations: React.FC = () => {
 };
 
 const Footer: React.FC = () => {
+  const handleFooterScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-white dark:bg-black pt-20 border-t border-zinc-200 dark:border-white/10 transition-colors duration-300">
       <div className="container mx-auto px-6 pb-12">
@@ -325,9 +352,9 @@ const Footer: React.FC = () => {
           <div className="space-y-6">
             <h4 className="font-brand font-bold uppercase text-xs tracking-widest text-zinc-900 dark:text-white">Quick Links</h4>
             <div className="flex flex-col gap-3 text-zinc-600 dark:text-zinc-500 text-sm">
-              <a href="#about" className="hover:text-red-600 dark:hover:text-white transition-colors">Our Story</a>
-              <a href="#services" className="hover:text-red-600 dark:hover:text-white transition-colors">Our Services</a>
-              <a href="#locations" className="hover:text-red-600 dark:hover:text-white transition-colors">Service Areas</a>
+              <a href="#about" onClick={(e) => handleFooterScroll(e, 'about')} className="hover:text-red-600 dark:hover:text-white transition-colors">Our Story</a>
+              <a href="#services" onClick={(e) => handleFooterScroll(e, 'services')} className="hover:text-red-600 dark:hover:text-white transition-colors">Our Services</a>
+              <a href="#locations" onClick={(e) => handleFooterScroll(e, 'locations')} className="hover:text-red-600 dark:hover:text-white transition-colors">Service Areas</a>
               <a href={`tel:${BRAND.phone}`} className="hover:text-red-600 dark:hover:text-white transition-colors">Instant Dispatch</a>
             </div>
           </div>

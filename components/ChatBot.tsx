@@ -88,7 +88,7 @@ const ChatBot: React.FC = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Type your emergency..."
-              className="flex-1 bg-zinc-800 border-none rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-red-600 outline-none"
+              className="flex-1 bg-zinc-800 border-none rounded-lg px-3 py-2 text-sm text-white focus:ring-1 focus:ring-red-600 outline-none placeholder:text-zinc-500"
             />
             <button 
               onClick={handleSend}
