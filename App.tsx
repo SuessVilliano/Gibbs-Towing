@@ -199,18 +199,18 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
         initial={{ opacity: 0, x: 100 }}
         animate={{ opacity: truckLoaded ? 1 : 0, x: truckLoaded ? 0 : 100 }}
         transition={{ duration: 1, delay: 0.3 }}
-        className="absolute right-0 bottom-0 w-[55%] h-[70%] hidden lg:flex items-end justify-end z-5 pointer-events-none"
+        className="absolute -right-10 md:right-0 bottom-10 md:bottom-20 w-[90%] md:w-[60%] lg:w-[55%] h-auto z-5 pointer-events-none"
       >
         <img
           src={HERO_IMAGE}
           alt="Gibbs Towing Heavy Duty Wrecker"
           onLoad={() => setTruckLoaded(true)}
-          className="w-full h-full object-contain object-right-bottom drop-shadow-[0_0_80px_rgba(227,27,35,0.3)]"
+          className="w-full h-auto object-contain drop-shadow-[0_0_60px_rgba(227,27,35,0.4)]"
         />
       </motion.div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl space-y-8">
+        <div className="max-w-xl lg:max-w-2xl space-y-8">
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -234,7 +234,7 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="text-zinc-200 text-lg md:text-2xl font-light leading-relaxed max-w-xl p-6 rounded-lg backdrop-blur-md border-l border-white/10 bg-black/30"
+            className="text-zinc-200 text-lg md:text-xl font-light leading-relaxed max-w-md"
           >
             Commercial truck towing and ATL load shifts specialists. Providing 24/7 heavy duty towing, winch outs, and trans load services across Georgia.
           </motion.p>
