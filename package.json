@@ -1,5 +1,5 @@
 {
-  "name": "gibbs-towing-&-recovery-luxury-portal",
+  "name": "gibbs-towing-&-recovery",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,10 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react-dom": "^19.2.4",
-    "lucide-react": "^0.563.0",
-    "react": "^19.2.4",
-    "@google/genai": "^1.38.0"
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "lucide-react": "0.460.0",
+    "@google/genai": "1.38.0",
+    "framer-motion": "11.11.17"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

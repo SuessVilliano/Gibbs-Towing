@@ -16,3 +16,8 @@ export interface ChatMessage {
   role: 'user' | 'model';
   text: string;
 }
+
+export interface GalleryImage {
+  url: string;
+  title: string;
+}
