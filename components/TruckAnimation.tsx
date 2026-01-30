@@ -3,7 +3,7 @@ import React from 'react';
 
 const TruckAnimation: React.FC = () => {
   return (
-    <div className="relative w-full h-64 overflow-hidden border-t border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-black/40 backdrop-blur-sm mt-auto">
+    <div className="relative w-full h-64 overflow-hidden border-t border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-zinc-950 mt-auto hidden md:block">
       <div className="absolute bottom-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent z-10"></div>
       
       {/* Road Markings */}

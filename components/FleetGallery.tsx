@@ -78,30 +78,17 @@ const FleetGallery: React.FC<FleetGalleryProps> = ({ isOpen, onClose, images }) 
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 backdrop-blur-md"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black"
         >
           {/* Close Button */}
           <button 
             onClick={onClose}
-            className="absolute top-6 right-6 z-50 p-3 bg-white/10 hover:bg-red-600 rounded-full text-white transition-colors backdrop-blur-sm"
+            className="absolute top-6 right-6 z-50 p-3 bg-zinc-800 hover:bg-red-600 rounded-full text-white transition-colors"
           >
             <X size={24} />
           </button>
 
-          {/* Background Blurred Image for Ambiance */}
-          <div className="absolute inset-0 overflow-hidden z-0 opacity-20 pointer-events-none">
-             {!imageError && (
-               <motion.img 
-                 key={currentIndex + "-bg"}
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 transition={{ duration: 1 }}
-                 src={images[currentIndex].url} 
-                 className="w-full h-full object-cover blur-3xl scale-110" 
-               />
-             )}
-          </div>
-
+          
           {/* Main Content */}
           <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-4 md:p-10">
             
@@ -162,13 +149,13 @@ const FleetGallery: React.FC<FleetGalleryProps> = ({ isOpen, onClose, images }) 
 
                {/* Navigation Buttons (Desktop) */}
               <button
-                className="hidden md:flex absolute left-4 bg-black/50 hover:bg-red-700 text-white p-4 rounded-full backdrop-blur-sm transition-all z-20 hover:scale-110 active:scale-95"
+                className="hidden md:flex absolute left-4 bg-zinc-800 hover:bg-red-700 text-white p-4 rounded-full transition-all z-20"
                 onClick={() => paginate(-1)}
               >
                 <ChevronLeft size={24} />
               </button>
               <button
-                className="hidden md:flex absolute right-4 bg-black/50 hover:bg-red-700 text-white p-4 rounded-full backdrop-blur-sm transition-all z-20 hover:scale-110 active:scale-95"
+                className="hidden md:flex absolute right-4 bg-zinc-800 hover:bg-red-700 text-white p-4 rounded-full transition-all z-20"
                 onClick={() => paginate(1)}
               >
                 <ChevronRight size={24} />
