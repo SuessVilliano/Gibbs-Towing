@@ -182,49 +182,32 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void }> = ({ darkMod
   );
 };
 
-const HeroImage = () => {
-  const [loaded, setLoaded] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
-
-  const imgUrl = HERO_IMAGE;
-
-  useEffect(() => {
-    if (imgRef.current && imgRef.current.complete) {
-      setLoaded(true);
-    }
-  }, []);
-
-  return (
-    <div className="absolute inset-0 z-0 bg-zinc-900 overflow-hidden">
-      <motion.img 
-        ref={imgRef}
-        initial={{ scale: 1.1 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 10, ease: "linear" }}
-        src={imgUrl} 
-        alt="ATL Heavy Duty Towing Big Rig Wrecker" 
-        className={`w-full h-full object-cover transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-        onLoad={() => setLoaded(true)}
-      />
-      
-      {/* Loading Skeleton */}
-      <div className={`absolute inset-0 bg-zinc-900 flex items-center justify-center transition-opacity duration-700 ${loaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-         <div className="flex flex-col items-center">
-            <Truck className="text-red-600 w-16 h-16 animate-bounce" />
-            <p className="text-white font-brand text-xs mt-4 tracking-widest animate-pulse">LOADING FLEET...</p>
-         </div>
-      </div>
-
-      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-    </div>
-  );
-};
-
 const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
+  const [truckLoaded, setTruckLoaded] = useState(false);
+
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      <HeroImage />
+      {/* Background */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-black">
+        {/* Red accent glow */}
+        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-red-600/10 blur-[150px] rounded-full"></div>
+        <div className="absolute top-1/4 left-0 w-[400px] h-[400px] bg-red-700/5 blur-[100px] rounded-full"></div>
+      </div>
+
+      {/* Hero Truck Image */}
+      <motion.div
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: truckLoaded ? 1 : 0, x: truckLoaded ? 0 : 100 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        className="absolute right-0 bottom-0 w-[55%] h-[70%] hidden lg:flex items-end justify-end z-5 pointer-events-none"
+      >
+        <img
+          src={HERO_IMAGE}
+          alt="Gibbs Towing Heavy Duty Wrecker"
+          onLoad={() => setTruckLoaded(true)}
+          className="w-full h-full object-contain object-right-bottom drop-shadow-[0_0_80px_rgba(227,27,35,0.3)]"
+        />
+      </motion.div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl space-y-8">
@@ -282,11 +265,11 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
         </div>
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 0.8 }}
-        className="absolute bottom-12 right-12 hidden lg:flex flex-col items-center gap-2 p-6 bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-2xl animate-bounce shadow-2xl"
+        className="absolute bottom-12 left-12 hidden md:flex flex-col items-center gap-2 p-6 bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl"
       >
          <Star className="text-yellow-500 fill-yellow-500" size={32} />
          <span className="text-xs font-bold uppercase tracking-widest text-center text-white">NTTS Atlanta<br/>Approved</span>

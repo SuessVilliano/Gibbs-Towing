@@ -51,15 +51,17 @@ export const FAQS = [
   }
 ];
 
-// Hero image - your main truck photo for the landing page
-export const HERO_IMAGE = "/images/hero-truck.jpg";
+// Hero image - the truck cutout with transparent background
+export const HERO_IMAGE = "/images/hero-truck.png";
 
-// Fleet gallery images - add your truck photos to public/images/
+// Fleet gallery images
 export const FLEET_IMAGES: GalleryImage[] = [
-  { url: "/images/fleet-1.jpg", title: "Heavy Duty Wrecker Fleet" },
-  { url: "/images/fleet-2.jpg", title: "Night Operations & Recovery" },
-  { url: "/images/fleet-3.jpg", title: "ATL Load Shifts" },
-  { url: "/images/fleet-4.jpg", title: "Rotator Service" },
-  { url: "/images/fleet-5.jpg", title: "Heavy Transport" },
-  { url: "/images/fleet-6.jpg", title: "Professional Recovery" },
+  { url: "/images/fleet-1.jpg", title: "Heavy Duty Rotator" },
+  { url: "/images/fleet-2.jpg", title: "Gibbs Wrecker Fleet" },
+  { url: "/images/fleet-3.jpg", title: "Night Operations" },
+  { url: "/images/fleet-4.jpg", title: "Heavy Equipment Recovery" },
+  { url: "/images/fleet-5.jpg", title: "Commercial Bus Towing" },
+  { url: "/images/fleet-6.jpg", title: "Heavy Haul Transport" },
+  { url: "/images/fleet-7.jpg", title: "Bobtail Services" },
+  { url: "/images/fleet-8.jpg", title: "24/7 Emergency Response" },
 ];
