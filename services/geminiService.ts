@@ -1,8 +1,19 @@
-
 import { GoogleGenAI } from "@google/genai";
 import { ChatMessage } from "../types";
 
-const ai = new GoogleGenAI(import.meta.env.VITE_GEMINI_API_KEY || "");
+let ai: GoogleGenAI | null = null;
+
+const getAI = () => {
+  if (!ai) {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
+      console.warn("Gemini API key not configured");
+      return null;
+    }
+    ai = new GoogleGenAI({ apiKey });
+  }
+  return ai;
+};
 
 const SYSTEM_INSTRUCTION = `
 You are the AI assistant for Gibbs Towing & Recovery. 
@@ -31,7 +42,11 @@ Instructions:
 
 export const getGeminiResponse = async (history: ChatMessage[], userMessage: string) => {
   try {
-    const chat = ai.models.generateContent({
+    const client = getAI();
+    if (!client) {
+      return "Chat service unavailable. Please call our 24/7 dispatch at (678) 508-9243.";
+    }
+    const chat = client.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [
         ...history.map(m => ({
