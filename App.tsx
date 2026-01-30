@@ -22,7 +22,7 @@ import {
   Camera
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BRAND, SERVICES, FAQS, FLEET_IMAGES } from './constants';
+import { BRAND, SERVICES, FAQS, FLEET_IMAGES, HERO_IMAGE } from './constants';
 import TruckAnimation from './components/TruckAnimation';
 import ChatBot from './components/ChatBot';
 import FleetGallery from './components/FleetGallery';
@@ -33,7 +33,7 @@ const StructuredData = () => {
     "@context": "https://schema.org",
     "@type": "AutoTowingService",
     "name": BRAND.name,
-    "image": "https://images.unsplash.com/photo-1605218427368-35b0185e4d2e?q=80&w=1200",
+    "image": `https://gibbs-towing.vercel.app${HERO_IMAGE}`,
     "telephone": BRAND.phone,
     "address": {
       "@type": "PostalAddress",
@@ -186,11 +186,7 @@ const HeroImage = () => {
   const [loaded, setLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  // PLACEHOLDER: Please replace this path with your uploaded image file path
-  // Example: "/images/hero-truck.jpg" if you put the file in public/images
-  // For now, using a black/red truck fallback URL
-  const imgUrl = "https://images.unsplash.com/photo-1605218427368-35b0185e4d2e?q=80&w=2000&auto=format&fit=crop"; 
-  // IMPORTANT: The user must upload their image and change the src above for the real hero image.
+  const imgUrl = HERO_IMAGE;
 
   useEffect(() => {
     if (imgRef.current && imgRef.current.complete) {
@@ -306,8 +302,8 @@ const About: React.FC = () => {
         <FadeInSection>
           <div className="relative group">
             <div className="aspect-[4/5] bg-zinc-200 dark:bg-zinc-900 rounded-sm overflow-hidden relative shadow-2xl">
-              <img 
-                src="https://images.unsplash.com/photo-1596525725091-64d50c60815e?q=80&w=800&auto=format&fit=crop" 
+              <img
+                src="/images/owner.jpg"
                 alt="James Gibbs - Owner of Gibbs Towing" 
                 className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
               />

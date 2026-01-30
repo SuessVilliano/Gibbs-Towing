@@ -51,40 +51,15 @@ export const FAQS = [
   }
 ];
 
-// --- IMAGE HOSTING INSTRUCTIONS ---
-// The best way to ensure images load 100% of the time is to host them in your project.
-// 1. Create a folder named 'images' inside your 'public' folder.
-// 2. Add your fleet photos there (e.g., 'wrecker1.jpg', 'rotator.jpg').
-// 3. Update the URLs below to point to them (e.g., url: '/images/wrecker1.jpg').
-// ----------------------------------
+// Hero image - your main truck photo for the landing page
+export const HERO_IMAGE = "/images/hero-truck.jpg";
 
+// Fleet gallery images - add your truck photos to public/images/
 export const FLEET_IMAGES: GalleryImage[] = [
-  { 
-    url: "https://images.unsplash.com/photo-1605218427368-35b0185e4d2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", 
-    title: "Heavy Duty Wrecker Fleet" 
-  },
-  { 
-    url: "https://images.unsplash.com/photo-1596525725091-64d50c60815e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", 
-    title: "Night Operations & Recovery" 
-  },
-  { 
-    url: "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", 
-    title: "ATL Load Shifts" 
-  },
-  { 
-    url: "https://images.unsplash.com/photo-1588625997631-f1945db5977a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", 
-    title: "Rotator Service" 
-  },
-  { 
-    url: "https://images.unsplash.com/photo-1501700493788-fa1a4fc9fe2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", 
-    title: "Heavy Transport" 
-  },
-  { 
-    url: "https://images.unsplash.com/photo-1626868840292-669c5e552c65?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", 
-    title: "Professional Dispatch" 
-  },
-  { 
-    url: "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", 
-    title: "NTTS Atlanta Dispatch" 
-  }
+  { url: "/images/fleet-1.jpg", title: "Heavy Duty Wrecker Fleet" },
+  { url: "/images/fleet-2.jpg", title: "Night Operations & Recovery" },
+  { url: "/images/fleet-3.jpg", title: "ATL Load Shifts" },
+  { url: "/images/fleet-4.jpg", title: "Rotator Service" },
+  { url: "/images/fleet-5.jpg", title: "Heavy Transport" },
+  { url: "/images/fleet-6.jpg", title: "Professional Recovery" },
 ];
