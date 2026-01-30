@@ -108,7 +108,7 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void }> = ({ darkMod
   };
 
   return (
-    <nav className={`fixed top-0 w-full z-40 transition-all duration-300 ${scrolled ? 'bg-white/90 dark:bg-black/90 backdrop-blur-md py-3 shadow-lg' : 'bg-transparent py-6'}`}>
+    <nav className={`fixed top-0 w-full z-40 transition-all duration-300 ${scrolled ? 'bg-white dark:bg-black py-3 shadow-lg' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
@@ -189,9 +189,8 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-black">
-        {/* Red accent glow */}
-        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-red-600/10 blur-[150px] rounded-full"></div>
-        <div className="absolute top-1/4 left-0 w-[400px] h-[400px] bg-red-700/5 blur-[100px] rounded-full"></div>
+        {/* Red accent glow - hidden on mobile to prevent crashes */}
+        <div className="hidden md:block absolute bottom-0 right-0 w-[600px] h-[400px] bg-red-600/10 blur-3xl rounded-full"></div>
       </div>
 
       {/* Hero Truck Image */}
@@ -205,7 +204,7 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
           src={HERO_IMAGE}
           alt="Gibbs Towing Heavy Duty Wrecker"
           onLoad={() => setTruckLoaded(true)}
-          className="w-full h-auto object-contain drop-shadow-[0_0_60px_rgba(227,27,35,0.4)]"
+          className="w-full h-auto object-contain md:drop-shadow-[0_0_40px_rgba(227,27,35,0.3)]"
         />
       </motion.div>
 
@@ -215,7 +214,7 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="inline-block border-l-4 border-red-700 pl-4 py-2 bg-white/10 backdrop-blur-md rounded-r-lg"
+            className="inline-block border-l-4 border-red-700 pl-4 py-2 bg-zinc-900/80 rounded-r-lg"
           >
             <p className="text-red-500 font-bold uppercase tracking-[0.3em] text-sm">ATL Heavy Duty Towing</p>
           </motion.div>
@@ -257,7 +256,7 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
               whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.1)' }}
               whileTap={{ scale: 0.98 }}
               onClick={onOpenGallery}
-              className="border border-white/30 text-white px-10 py-5 rounded-sm font-brand font-black text-xl italic tracking-tight uppercase flex items-center justify-center gap-3 transition-colors backdrop-blur-sm bg-black/20 hover:bg-black/40"
+              className="border border-white/30 text-white px-10 py-5 rounded-sm font-brand font-black text-xl italic tracking-tight uppercase flex items-center justify-center gap-3 transition-colors bg-zinc-900/80 hover:bg-zinc-800"
             >
               Our Fleet <Camera size={20} />
             </motion.button>
@@ -269,7 +268,7 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 0.8 }}
-        className="absolute bottom-12 left-12 hidden md:flex flex-col items-center gap-2 p-6 bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl"
+        className="absolute bottom-12 left-12 hidden md:flex flex-col items-center gap-2 p-6 bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl"
       >
          <Star className="text-yellow-500 fill-yellow-500" size={32} />
          <span className="text-xs font-bold uppercase tracking-widest text-center text-white">NTTS Atlanta<br/>Approved</span>
