@@ -57,7 +57,11 @@
             100% { transform: translateX(100vw); }
         }
         .animate-truck {
-            animation: scrollTruck 20s linear infinite;
+            animation: scrollTruck 12s linear infinite;
+        }
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-160px); }
         }
         .text-gradient-red {
             background: linear-gradient(to right, #E31B23, #ff4d4d);
