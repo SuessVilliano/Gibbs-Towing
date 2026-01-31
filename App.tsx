@@ -160,24 +160,17 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void }> = ({ darkMod
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-white/10 p-6 flex flex-col gap-6 shadow-2xl overflow-hidden"
-          >
-            <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="text-lg font-brand text-zinc-900 dark:text-white">About Us</a>
-            <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-lg font-brand text-zinc-900 dark:text-white">Services</a>
-            <a href="#locations" onClick={(e) => handleNavClick(e, 'locations')} className="text-lg font-brand text-zinc-900 dark:text-white">Locations</a>
-            <a href="#faq" onClick={(e) => handleNavClick(e, 'faq')} className="text-lg font-brand text-zinc-900 dark:text-white">FAQ</a>
-            <a href={`tel:${BRAND.phone}`} className="bg-red-700 text-center py-4 rounded-xl font-bold text-white uppercase tracking-widest shadow-lg">
-              Call Dispatch Now
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mobileOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-zinc-950 border-t border-white/10 p-6 flex flex-col gap-6 shadow-2xl z-50">
+          <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="text-lg font-brand text-white active:text-red-500">About Us</a>
+          <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-lg font-brand text-white active:text-red-500">Services</a>
+          <a href="#locations" onClick={(e) => handleNavClick(e, 'locations')} className="text-lg font-brand text-white active:text-red-500">Locations</a>
+          <a href="#faq" onClick={(e) => handleNavClick(e, 'faq')} className="text-lg font-brand text-white active:text-red-500">FAQ</a>
+          <a href={`tel:${BRAND.phone}`} className="bg-red-700 text-center py-4 rounded-xl font-bold text-white uppercase tracking-widest shadow-lg">
+            Call Dispatch Now
+          </a>
+        </div>
+      )}
     </nav>
   );
 };
