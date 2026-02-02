@@ -24,7 +24,7 @@ const TruckAnimation: React.FC = () => {
         {[...Array(10)].map((_, groupIndex) => (
           <React.Fragment key={groupIndex}>
             {truckImages.map((imgUrl, imgIndex) => (
-              <div key={`${groupIndex}-${imgIndex}`} className="flex items-center justify-center h-full px-4">
+              <div key={`${groupIndex}-${imgIndex}`} className="flex items-center justify-center h-full px-4 flex-shrink-0">
                 <img
                   src={imgUrl}
                   alt="Gibbs Towing Fleet"
