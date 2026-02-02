@@ -195,21 +195,27 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void; onOpenGallery:
 
 const HeroImage = () => {
   const [loaded, setLoaded] = useState(false);
-  const imgUrl = "https://images.unsplash.com/photo-1605218427368-35b0185e4d2e?q=80&w=2000&auto=format&fit=crop";
 
   return (
-    <div className="absolute inset-0 z-0 bg-zinc-900 overflow-hidden">
+    <div className="absolute inset-0 z-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-800 overflow-hidden">
+      {/* Actual Gibbs Truck - Positioned prominently */}
       <motion.img
-        initial={{ scale: 1.1 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 15, ease: "linear" }}
-        src={imgUrl}
-        alt="Commercial Recovery Fleet"
-        className={`w-full h-full object-cover transition-opacity duration-1000 ${loaded ? 'opacity-40' : 'opacity-0'}`}
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        src="/images/gibbs-hero-truck.png"
+        alt="Gibbs Heavy-Duty Tow Truck"
+        className={`absolute right-0 top-1/2 -translate-y-1/2 h-[70%] w-auto object-contain transition-opacity duration-1000 ${loaded ? 'opacity-90' : 'opacity-0'}`}
         onLoad={() => setLoaded(true)}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+      {/* Dramatic lighting overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+      {/* Subtle grid pattern for depth */}
+      <div className="absolute inset-0 opacity-5" style={{
+        backgroundImage: 'linear-gradient(rgba(227, 27, 35, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(227, 27, 35, 0.3) 1px, transparent 1px)',
+        backgroundSize: '50px 50px'
+      }}></div>
     </div>
   );
 };

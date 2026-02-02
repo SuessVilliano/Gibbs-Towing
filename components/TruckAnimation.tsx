@@ -1,43 +1,46 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
 
 const TruckAnimation: React.FC = () => {
-  return (
-    <div className="relative w-full h-48 overflow-hidden bg-zinc-100 dark:bg-black border-t border-zinc-200 dark:border-white/5 flex items-center">
-      {/* Background Static Text Elements for Enterprise Feel */}
-      <div className="absolute inset-0 flex items-center justify-around opacity-[0.03] select-none pointer-events-none">
-         {[...Array(5)].map((_, i) => (
-           <span key={i} className="font-brand font-black text-7xl italic uppercase">LOGISTICS</span>
-         ))}
-      </div>
+  // Actual Gibbs company truck images
+  const truckImages = [
+    "/images/gibbs-truck-1.png",
+    "/images/gibbs-truck-2.png",
+    "/images/gibbs-truck-3.png",
+    "/images/gibbs-truck-4.png",
+  ];
 
-      {/* The Enterprise Logo Motion Container */}
-      <div className="animate-logo-scroll flex items-center gap-24 whitespace-nowrap">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="flex items-center gap-6 group">
-            <div className="w-12 h-12 bg-red-700 flex items-center justify-center rounded-sm">
-                <svg viewBox="0 0 24 24" className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M10 17h4V5H2v12h3m11 0h2l3-3v-3h-5v6ZM5 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0Zm11 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z" />
-                </svg>
-            </div>
-            <div className="flex flex-col">
-                <span className="font-brand font-black text-4xl tracking-tighter italic leading-none text-zinc-900 dark:text-white group-hover:text-red-600 transition-colors logo-glow">GIBBS</span>
-                <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-600">Logistics & Recovery</span>
-            </div>
-            
-            <div className="h-10 w-px bg-zinc-300 dark:bg-zinc-800 ml-8"></div>
-            
-            <span className="text-zinc-400 dark:text-zinc-600 font-brand font-bold uppercase tracking-widest text-xs">
-                Multi-State Coverage
-            </span>
-          </div>
+  return (
+    <div className="relative w-full h-48 overflow-hidden bg-white dark:bg-black border-t border-zinc-200 dark:border-white/5">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 flex items-center justify-around opacity-[0.02] select-none pointer-events-none">
+        {[...Array(5)].map((_, i) => (
+          <span key={i} className="font-brand font-black text-7xl italic uppercase text-zinc-900 dark:text-white">GIBBS</span>
         ))}
       </div>
 
-      {/* Decorative Overlay Gradient */}
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-zinc-100 dark:from-black to-transparent z-10"></div>
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-zinc-100 dark:from-black to-transparent z-10"></div>
+      {/* Scrolling Truck Images - Actual Company Fleet */}
+      <div className="animate-logo-scroll flex items-center gap-12 whitespace-nowrap h-full">
+        {[...Array(10)].map((_, groupIndex) => (
+          <React.Fragment key={groupIndex}>
+            {truckImages.map((imgUrl, imgIndex) => (
+              <div key={`${groupIndex}-${imgIndex}`} className="flex items-center justify-center h-full px-4">
+                <img
+                  src={imgUrl}
+                  alt="Gibbs Towing Fleet"
+                  className="h-32 w-auto object-contain filter drop-shadow-2xl hover:scale-110 transition-transform duration-300"
+                />
+              </div>
+            ))}
+            {/* Divider between groups */}
+            <div className="h-20 w-px bg-red-600/20 mx-4"></div>
+          </React.Fragment>
+        ))}
+      </div>
+
+      {/* Edge Fade Gradients */}
+      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white dark:from-black to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white dark:from-black to-transparent z-10 pointer-events-none"></div>
     </div>
   );
 };
