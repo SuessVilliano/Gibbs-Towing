@@ -1,0 +1,7 @@
+{
+  "name": "Gibbs Towing & Recovery",
+  "description": "Enterprise-grade heavy-duty towing, recovery, and load-shift logistics. Headquartered in Georgia, serving the Southeast and Nationwide commercial contracts.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
