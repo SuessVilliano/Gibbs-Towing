@@ -288,9 +288,9 @@ const About: React.FC = () => {
           <div className="relative group">
             <div className="aspect-video bg-zinc-900 rounded-sm overflow-hidden relative shadow-2xl border border-white/10">
               <img
-                src="https://images.unsplash.com/photo-1596525725091-64d50c60815e?q=80&w=800&auto=format&fit=crop"
-                alt="Gibbs Heavy Logistics"
-                className="w-full h-full object-cover opacity-60"
+                src="/images/gibbs-truck-1.png"
+                alt="Gibbs Heavy Logistics Fleet"
+                className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
               <div className="absolute bottom-8 left-8 text-white">
@@ -517,7 +517,7 @@ function App() {
   const [adminOpen, setAdminOpen] = useState(false);
   const [fleetImages, setFleetImages] = useState<GalleryImage[]>(FLEET_IMAGES);
 
-  // Check for admin URL on mount
+  // Check for admin URL on mount and keyboard shortcut
   useEffect(() => {
     const checkAdminAccess = () => {
       if (window.location.pathname === '/admin-fleet-2024' || window.location.hash === '#admin-fleet-2024') {
@@ -528,7 +528,20 @@ function App() {
 
     // Listen for hash changes
     window.addEventListener('hashchange', checkAdminAccess);
-    return () => window.removeEventListener('hashchange', checkAdminAccess);
+
+    // Keyboard shortcut: Ctrl+Shift+A to open admin panel
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        setAdminOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('hashchange', checkAdminAccess);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   // Load fleet images from JSON file
