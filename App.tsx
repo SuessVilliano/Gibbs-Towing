@@ -544,9 +544,24 @@ function App() {
     };
   }, []);
 
-  // Load fleet images from JSON file
+  // Load fleet images - check localStorage first, then fall back to JSON file
   useEffect(() => {
     const loadFleetImages = async () => {
+      // First check localStorage for admin-uploaded images
+      const savedImages = localStorage.getItem('gibbs-fleet-images');
+      if (savedImages) {
+        try {
+          const parsed = JSON.parse(savedImages);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setFleetImages(parsed);
+            return; // Use localStorage images
+          }
+        } catch (e) {
+          console.log('localStorage parse error, falling back to JSON');
+        }
+      }
+
+      // Fall back to fleet-data.json
       try {
         const response = await fetch('/fleet-data.json');
         if (response.ok) {
@@ -572,9 +587,13 @@ function App() {
 
   const handleUpdateFleetImages = (newImages: GalleryImage[]) => {
     setFleetImages(newImages);
-    // In a real implementation, this would save to backend/file system
-    // For now, we'll just update the state
-    console.log('Fleet images updated:', newImages);
+    // Save to localStorage for persistence
+    try {
+      localStorage.setItem('gibbs-fleet-images', JSON.stringify(newImages));
+      console.log('Fleet images saved to localStorage');
+    } catch (e) {
+      console.error('Failed to save to localStorage:', e);
+    }
   };
 
   return (
