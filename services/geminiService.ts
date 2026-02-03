@@ -2,7 +2,26 @@
 import { GoogleGenAI } from "@google/genai";
 import { ChatMessage } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+// Safely get API key - handle cases where process.env might not be defined
+const getApiKey = () => {
+  try {
+    return process.env?.API_KEY || process.env?.GEMINI_API_KEY || '';
+  } catch {
+    return '';
+  }
+};
+
+// Lazy initialization to prevent crashes on module load
+let ai: GoogleGenAI | null = null;
+const getAI = () => {
+  if (!ai) {
+    const apiKey = getApiKey();
+    if (apiKey) {
+      ai = new GoogleGenAI({ apiKey });
+    }
+  }
+  return ai;
+};
 
 const SYSTEM_INSTRUCTION = `
 You are the Enterprise AI Assistant for Gibbs Towing & Recovery. 
@@ -28,8 +47,13 @@ IMPORTANT RULES:
 `;
 
 export const getGeminiResponse = async (history: ChatMessage[], userMessage: string) => {
+  const aiClient = getAI();
+  if (!aiClient) {
+    return "AI assistant is currently unavailable. Please contact our 24/7 command center at (678) 508-9243.";
+  }
+
   try {
-    const chat = ai.models.generateContent({
+    const chat = aiClient.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [
         ...history.map(m => ({
