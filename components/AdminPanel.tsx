@@ -182,14 +182,32 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
     };
 
     const handleSaveAll = async () => {
+        setError('');
         try {
+            const jsonData = JSON.stringify(images);
+
+            // Check estimated size (localStorage limit is ~5MB)
+            const sizeInMB = new Blob([jsonData]).size / (1024 * 1024);
+            if (sizeInMB > 4.5) {
+                setError(`Data too large (${sizeInMB.toFixed(1)}MB). Try using smaller images or fewer uploads. Max ~4.5MB.`);
+                return;
+            }
+
             // Save to localStorage for persistence
-            localStorage.setItem('gibbs-fleet-images', JSON.stringify(images));
+            localStorage.setItem('gibbs-fleet-images', jsonData);
+
+            // Update parent component
             onUpdate(images);
-            setSuccess('All changes saved! Images will persist across page refreshes.');
+
+            setSuccess(`Saved! ${images.length} images (${sizeInMB.toFixed(2)}MB). Refresh page to see changes in gallery.`);
             setTimeout(() => setSuccess(''), 5000);
-        } catch (err) {
-            setError('Failed to save changes');
+        } catch (err: any) {
+            console.error('Save error:', err);
+            if (err.name === 'QuotaExceededError') {
+                setError('Storage quota exceeded. Try removing some images or using smaller files.');
+            } else {
+                setError(`Failed to save: ${err.message || 'Unknown error'}`);
+            }
         }
     };
 
