@@ -66,21 +66,52 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
         }
     };
 
-    // Convert file to base64
-    const fileToBase64 = (file: File): Promise<string> => {
+    // Compress and resize image to reduce file size
+    const compressImage = (file: File, maxWidth = 1200, quality = 0.7): Promise<string> => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = error => reject(error);
+            reader.onload = (e) => {
+                const img = new window.Image();
+                img.src = e.target?.result as string;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    // Resize if larger than maxWidth
+                    if (width > maxWidth) {
+                        height = (height * maxWidth) / width;
+                        width = maxWidth;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) {
+                        reject(new Error('Could not get canvas context'));
+                        return;
+                    }
+
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Convert to JPEG with compression
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+                    resolve(compressedBase64);
+                };
+                img.onerror = () => reject(new Error('Failed to load image'));
+            };
+            reader.onerror = () => reject(new Error('Failed to read file'));
         });
     };
 
-    // Handle file upload (single or multiple)
+    // Handle file upload (single or multiple) with compression
     const handleFileUpload = async (files: FileList | null) => {
         if (!files || files.length === 0) return;
 
         setUploadProgress(0);
+        setError('');
         const newImages: GalleryImage[] = [];
         const totalFiles = files.length;
 
@@ -92,10 +123,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
             }
 
             try {
-                const base64 = await fileToBase64(file);
+                // Compress image to reduce size (max 1200px wide, 70% quality)
+                const compressedBase64 = await compressImage(file, 1200, 0.7);
                 const title = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
                 newImages.push({
-                    url: base64,
+                    url: compressedBase64,
                     title: title.charAt(0).toUpperCase() + title.slice(1)
                 });
                 setUploadProgress(Math.round(((i + 1) / totalFiles) * 100));
@@ -106,7 +138,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
 
         if (newImages.length > 0) {
             setImages(prev => [...prev, ...newImages]);
-            setSuccess(`${newImages.length} image${newImages.length > 1 ? 's' : ''} uploaded successfully!`);
+            setSuccess(`${newImages.length} image${newImages.length > 1 ? 's' : ''} uploaded & compressed!`);
             setTimeout(() => setSuccess(''), 3000);
         }
         setUploadProgress(null);
@@ -166,14 +198,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
         }
     };
 
-    // Handle single image file upload in edit mode
+    // Handle single image file upload in edit mode (with compression)
     const handleEditFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
         try {
-            const base64 = await fileToBase64(file);
-            setEditUrl(base64);
+            const compressedBase64 = await compressImage(file, 1200, 0.7);
+            setEditUrl(compressedBase64);
             const title = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
             setEditTitle(title.charAt(0).toUpperCase() + title.slice(1));
         } catch (err) {
