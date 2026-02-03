@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Trash2, Edit2, Save, Lock, Eye, EyeOff, GripVertical } from 'lucide-react';
+import { X, Plus, Trash2, Edit2, Save, Lock, Eye, EyeOff, GripVertical, Upload, Image, Download, FolderUp } from 'lucide-react';
 import { GalleryImage } from '../types';
 
 interface AdminPanelProps {
@@ -21,6 +21,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [isDragging, setIsDragging] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setImages(currentImages);
@@ -29,6 +32,18 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
+            // Load saved images from localStorage
+            const savedImages = localStorage.getItem('gibbs-fleet-images');
+            if (savedImages) {
+                try {
+                    const parsed = JSON.parse(savedImages);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        setImages(parsed);
+                    }
+                } catch (e) {
+                    console.log('Using default images');
+                }
+            }
         } else {
             document.body.style.overflow = 'unset';
             setAuthenticated(false);
@@ -42,7 +57,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
     }, [isOpen]);
 
     const handleLogin = () => {
-        // Password check with user's specified password
         const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || '$R1yamahar1$';
         if (password === adminPassword) {
             setAuthenticated(true);
@@ -52,9 +66,72 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
         }
     };
 
+    // Convert file to base64
+    const fileToBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = error => reject(error);
+        });
+    };
+
+    // Handle file upload (single or multiple)
+    const handleFileUpload = async (files: FileList | null) => {
+        if (!files || files.length === 0) return;
+
+        setUploadProgress(0);
+        const newImages: GalleryImage[] = [];
+        const totalFiles = files.length;
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (!file.type.startsWith('image/')) {
+                setError(`${file.name} is not an image file`);
+                continue;
+            }
+
+            try {
+                const base64 = await fileToBase64(file);
+                const title = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+                newImages.push({
+                    url: base64,
+                    title: title.charAt(0).toUpperCase() + title.slice(1)
+                });
+                setUploadProgress(Math.round(((i + 1) / totalFiles) * 100));
+            } catch (err) {
+                setError(`Failed to upload ${file.name}`);
+            }
+        }
+
+        if (newImages.length > 0) {
+            setImages(prev => [...prev, ...newImages]);
+            setSuccess(`${newImages.length} image${newImages.length > 1 ? 's' : ''} uploaded successfully!`);
+            setTimeout(() => setSuccess(''), 3000);
+        }
+        setUploadProgress(null);
+    };
+
+    // Drag and drop handlers
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+        handleFileUpload(e.dataTransfer.files);
+    };
+
     const handleAddImage = () => {
         const newImage: GalleryImage = {
-            url: 'https://images.unsplash.com/photo-1605218427368-35b0185e4d2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+            url: '',
             title: 'New Fleet Image'
         };
         setImages([...images, newImage]);
@@ -89,22 +166,58 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
         }
     };
 
+    // Handle single image file upload in edit mode
+    const handleEditFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const base64 = await fileToBase64(file);
+            setEditUrl(base64);
+            const title = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+            setEditTitle(title.charAt(0).toUpperCase() + title.slice(1));
+        } catch (err) {
+            setError('Failed to upload image');
+        }
+    };
+
     const handleSaveAll = async () => {
         try {
-            // In a real implementation, this would save to a backend
-            // For now, we'll just update the parent component
+            // Save to localStorage for persistence
+            localStorage.setItem('gibbs-fleet-images', JSON.stringify(images));
             onUpdate(images);
-            setSuccess('All changes saved! Refresh the page to see updates.');
+            setSuccess('All changes saved! Images will persist across page refreshes.');
             setTimeout(() => setSuccess(''), 5000);
         } catch (err) {
             setError('Failed to save changes');
         }
     };
 
-    const moveImage = (fromIndex: number, toIndex: number) => {
+    // Export configuration as JSON
+    const handleExportConfig = () => {
+        const config = {
+            images: images.map(img => ({
+                url: img.url.startsWith('data:') ? '[BASE64_IMAGE]' : img.url,
+                title: img.title
+            }))
+        };
+        const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'fleet-data.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        setSuccess('Configuration exported!');
+        setTimeout(() => setSuccess(''), 3000);
+    };
+
+    const moveImage = (fromIndex: number, direction: 'up' | 'down') => {
+        const toIndex = direction === 'up' ? fromIndex - 1 : fromIndex + 1;
+        if (toIndex < 0 || toIndex >= images.length) return;
+
         const newImages = [...images];
-        const [movedItem] = newImages.splice(fromIndex, 1);
-        newImages.splice(toIndex, 0, movedItem);
+        [newImages[fromIndex], newImages[toIndex]] = [newImages[toIndex], newImages[fromIndex]];
         setImages(newImages);
     };
 
@@ -194,24 +307,85 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
                                 </div>
                             )}
 
+                            {/* Upload Progress */}
+                            {uploadProgress !== null && (
+                                <div className="mb-4 p-4 bg-blue-900/50 border border-blue-600 rounded-lg">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex-1 bg-zinc-700 rounded-full h-2">
+                                            <div
+                                                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                                                style={{ width: `${uploadProgress}%` }}
+                                            />
+                                        </div>
+                                        <span className="text-blue-400 text-sm">{uploadProgress}%</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Drag & Drop Upload Zone */}
+                            <div
+                                onDragOver={handleDragOver}
+                                onDragLeave={handleDragLeave}
+                                onDrop={handleDrop}
+                                onClick={() => fileInputRef.current?.click()}
+                                className={`mb-6 border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${
+                                    isDragging
+                                        ? 'border-red-500 bg-red-900/20'
+                                        : 'border-zinc-700 hover:border-red-600 hover:bg-zinc-800/50'
+                                }`}
+                            >
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={(e) => handleFileUpload(e.target.files)}
+                                    className="hidden"
+                                />
+                                <FolderUp className="mx-auto text-zinc-500 mb-4" size={48} />
+                                <p className="text-white font-bold text-lg mb-2">
+                                    {isDragging ? 'Drop images here!' : 'Drag & Drop Images Here'}
+                                </p>
+                                <p className="text-zinc-500 text-sm">
+                                    or click to select files • Supports JPG, PNG, WebP • Multiple files allowed
+                                </p>
+                            </div>
+
                             {/* Action Buttons */}
-                            <div className="flex gap-4 mb-6">
+                            <div className="flex flex-wrap gap-4 mb-6">
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="flex items-center gap-2 px-6 py-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg font-bold uppercase tracking-wider transition-colors"
+                                >
+                                    <Upload size={20} /> Upload Images
+                                </button>
                                 <button
                                     onClick={handleAddImage}
-                                    className="flex items-center gap-2 px-6 py-3 bg-red-700 hover:bg-red-600 text-white rounded-lg font-bold uppercase tracking-wider transition-colors"
+                                    className="flex items-center gap-2 px-6 py-3 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg font-bold uppercase tracking-wider transition-colors"
                                 >
-                                    <Plus size={20} /> Add New Image
+                                    <Plus size={20} /> Add URL
                                 </button>
                                 <button
                                     onClick={handleSaveAll}
                                     className="flex items-center gap-2 px-6 py-3 bg-green-700 hover:bg-green-600 text-white rounded-lg font-bold uppercase tracking-wider transition-colors"
                                 >
-                                    <Save size={20} /> Save All Changes
+                                    <Save size={20} /> Save All
+                                </button>
+                                <button
+                                    onClick={handleExportConfig}
+                                    className="flex items-center gap-2 px-6 py-3 bg-purple-700 hover:bg-purple-600 text-white rounded-lg font-bold uppercase tracking-wider transition-colors"
+                                >
+                                    <Download size={20} /> Export Config
                                 </button>
                             </div>
 
-                            {/* Images List */}
-                            <div className="space-y-4">
+                            {/* Images Count */}
+                            <div className="mb-4 text-zinc-400 text-sm">
+                                {images.length} image{images.length !== 1 ? 's' : ''} in gallery
+                            </div>
+
+                            {/* Images Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {images.map((image, index) => (
                                     <div
                                         key={index}
@@ -220,34 +394,57 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
                                         {editingIndex === index ? (
                                             // Edit Mode
                                             <div className="space-y-4">
+                                                <div className="flex gap-4">
+                                                    <div className="w-32 h-24 bg-zinc-700 rounded overflow-hidden flex-shrink-0">
+                                                        {editUrl ? (
+                                                            <img src={editUrl} alt="Preview" className="w-full h-full object-cover" />
+                                                        ) : (
+                                                            <div className="w-full h-full flex items-center justify-center">
+                                                                <Image className="text-zinc-600" size={32} />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex-1 space-y-2">
+                                                        <label className="block">
+                                                            <span className="text-zinc-400 text-xs uppercase tracking-wider">Upload New Image</span>
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                onChange={handleEditFileUpload}
+                                                                className="mt-1 block w-full text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-700 file:text-white hover:file:bg-red-600 cursor-pointer"
+                                                            />
+                                                        </label>
+                                                    </div>
+                                                </div>
                                                 <div>
-                                                    <label className="block text-zinc-400 text-sm mb-2 uppercase tracking-wider">Image URL</label>
+                                                    <label className="block text-zinc-400 text-xs mb-1 uppercase tracking-wider">Or Enter URL</label>
                                                     <input
                                                         type="text"
                                                         value={editUrl}
                                                         onChange={(e) => setEditUrl(e.target.value)}
-                                                        className="w-full px-4 py-2 bg-zinc-900 border border-zinc-700 rounded text-white focus:outline-none focus:border-red-600"
+                                                        placeholder="https://example.com/image.jpg or /images/truck.jpg"
+                                                        className="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 rounded text-white text-sm focus:outline-none focus:border-red-600"
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label className="block text-zinc-400 text-sm mb-2 uppercase tracking-wider">Image Title</label>
+                                                    <label className="block text-zinc-400 text-xs mb-1 uppercase tracking-wider">Image Title</label>
                                                     <input
                                                         type="text"
                                                         value={editTitle}
                                                         onChange={(e) => setEditTitle(e.target.value)}
-                                                        className="w-full px-4 py-2 bg-zinc-900 border border-zinc-700 rounded text-white focus:outline-none focus:border-red-600"
+                                                        className="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 rounded text-white text-sm focus:outline-none focus:border-red-600"
                                                     />
                                                 </div>
                                                 <div className="flex gap-2">
                                                     <button
                                                         onClick={handleSaveEdit}
-                                                        className="flex items-center gap-2 px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded font-bold transition-colors"
+                                                        className="flex items-center gap-2 px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded font-bold text-sm transition-colors"
                                                     >
-                                                        <Save size={16} /> Save
+                                                        <Save size={14} /> Save
                                                     </button>
                                                     <button
                                                         onClick={() => setEditingIndex(null)}
-                                                        className="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded font-bold transition-colors"
+                                                        className="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded font-bold text-sm transition-colors"
                                                     >
                                                         Cancel
                                                     </button>
@@ -256,32 +453,55 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
                                         ) : (
                                             // View Mode
                                             <div className="flex items-center gap-4">
-                                                <div className="cursor-move text-zinc-600 hover:text-zinc-400">
-                                                    <GripVertical size={20} />
+                                                <div className="flex flex-col gap-1">
+                                                    <button
+                                                        onClick={() => moveImage(index, 'up')}
+                                                        disabled={index === 0}
+                                                        className="p-1 text-zinc-600 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                                                    >
+                                                        ▲
+                                                    </button>
+                                                    <button
+                                                        onClick={() => moveImage(index, 'down')}
+                                                        disabled={index === images.length - 1}
+                                                        className="p-1 text-zinc-600 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                                                    >
+                                                        ▼
+                                                    </button>
                                                 </div>
-                                                <img
-                                                    src={image.url}
-                                                    alt={image.title}
-                                                    className="w-32 h-20 object-cover rounded"
-                                                />
-                                                <div className="flex-1">
-                                                    <h4 className="text-white font-bold">{image.title}</h4>
-                                                    <p className="text-zinc-500 text-sm truncate">{image.url}</p>
+                                                <div className="w-24 h-16 bg-zinc-700 rounded overflow-hidden flex-shrink-0">
+                                                    {image.url ? (
+                                                        <img
+                                                            src={image.url}
+                                                            alt={image.title}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center">
+                                                            <Image className="text-zinc-600" size={24} />
+                                                        </div>
+                                                    )}
                                                 </div>
-                                                <div className="flex gap-2">
+                                                <div className="flex-1 min-w-0">
+                                                    <h4 className="text-white font-bold text-sm truncate">{image.title}</h4>
+                                                    <p className="text-zinc-500 text-xs truncate">
+                                                        {image.url.startsWith('data:') ? '[Uploaded Image]' : image.url}
+                                                    </p>
+                                                </div>
+                                                <div className="flex gap-2 flex-shrink-0">
                                                     <button
                                                         onClick={() => handleEditImage(index)}
                                                         className="p-2 bg-blue-700 hover:bg-blue-600 text-white rounded transition-colors"
                                                         title="Edit"
                                                     >
-                                                        <Edit2 size={16} />
+                                                        <Edit2 size={14} />
                                                     </button>
                                                     <button
                                                         onClick={() => handleDeleteImage(index)}
                                                         className="p-2 bg-red-700 hover:bg-red-600 text-white rounded transition-colors"
                                                         title="Delete"
                                                     >
-                                                        <Trash2 size={16} />
+                                                        <Trash2 size={14} />
                                                     </button>
                                                 </div>
                                             </div>
@@ -292,9 +512,23 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
 
                             {images.length === 0 && (
                                 <div className="text-center py-12 text-zinc-500">
-                                    <p className="text-lg">No images yet. Click "Add New Image" to get started.</p>
+                                    <Image className="mx-auto mb-4" size={48} />
+                                    <p className="text-lg">No images yet.</p>
+                                    <p className="text-sm">Drag & drop images above or click "Upload Images" to get started.</p>
                                 </div>
                             )}
+
+                            {/* Instructions */}
+                            <div className="mt-8 p-4 bg-zinc-800/50 rounded-lg border border-zinc-700">
+                                <h4 className="text-white font-bold mb-2">Quick Tips:</h4>
+                                <ul className="text-zinc-400 text-sm space-y-1">
+                                    <li>• <strong>Drag & drop</strong> multiple images at once for bulk upload</li>
+                                    <li>• <strong>Uploaded images</strong> are saved in your browser and persist across refreshes</li>
+                                    <li>• <strong>Reorder</strong> images using the up/down arrows</li>
+                                    <li>• <strong>Export Config</strong> to backup your gallery configuration</li>
+                                    <li>• For permanent hosting, upload images to your GitHub repo's <code className="bg-zinc-900 px-1 rounded">/public/images/</code> folder</li>
+                                </ul>
+                            </div>
                         </div>
                     )}
                 </motion.div>
