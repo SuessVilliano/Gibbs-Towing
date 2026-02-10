@@ -111,7 +111,7 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void; onOpenGallery:
           </div>
           <div className="flex flex-col">
             <span className={`font-brand font-black text-xl tracking-tighter italic leading-none ${scrolled || mobileOpen ? 'text-zinc-900 dark:text-white' : 'text-white'}`}>GIBBS</span>
-            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-red-600 -mt-1">Logistics & Recovery</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-red-600 -mt-1">Heavy Duty, Towing & Recovery</span>
           </div>
         </motion.div>
 
@@ -233,7 +233,7 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
             transition={{ duration: 0.8 }}
             className="inline-block border-l-4 border-red-700 pl-4 py-2 bg-white/5 backdrop-blur-md rounded-r-lg"
           >
-            <p className="text-red-500 font-bold uppercase tracking-[0.4em] text-xs">Southeast Logistics & Recovery Operations</p>
+            <p className="text-red-500 font-bold uppercase tracking-[0.4em] text-xs">Southeast Heavy Duty, Towing & Recovery Operations</p>
           </motion.div>
 
           <motion.h1
@@ -459,7 +459,7 @@ const Footer: React.FC = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-brand font-black text-2xl tracking-tighter italic leading-none text-zinc-900 dark:text-white">GIBBS</span>
-                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-red-600 -mt-0.5">Logistics & Recovery</span>
+                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-red-600 -mt-0.5">Heavy Duty, Towing & Recovery</span>
               </div>
             </div>
             <p className="text-zinc-600 dark:text-zinc-500 text-lg max-w-md leading-relaxed">
