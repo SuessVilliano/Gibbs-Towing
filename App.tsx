@@ -242,8 +242,8 @@ const Hero: React.FC<{ onOpenGallery: () => void }> = ({ onOpenGallery }) => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-5xl md:text-7xl lg:text-8xl font-brand font-black italic tracking-tighter leading-[0.9] uppercase text-white"
           >
-            Built for Complex <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-400">Jobs Anywhere</span>
+            Gibbs Heavy Duty, <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-400">Towing & Recovery</span>
           </motion.h1>
 
           <motion.p
