@@ -1,24 +1,44 @@
 {
     "images": [
         {
-            "url": "/images/gibbs-hero-truck.png",
-            "title": "Gibbs Heavy-Duty Wrecker - Flagship Unit"
-        },
-        {
             "url": "/images/gibbs-truck-1.png",
-            "title": "Gibbs Fleet - Multi-State Operations"
+            "title": "Gibbs Fleet - Commercial Bus Recovery"
         },
         {
             "url": "/images/gibbs-truck-2.png",
-            "title": "Gibbs Recovery Unit - Night Operations"
+            "title": "Gibbs Light-Duty Wrecker - Night Operations"
         },
         {
             "url": "/images/gibbs-truck-3.png",
-            "title": "Gibbs Heavy Wrecker - Commercial Recovery"
+            "title": "Gibbs Heavy-Duty Wrecker Unit"
         },
         {
             "url": "/images/gibbs-truck-4.png",
-            "title": "Gibbs Tractor Unit - Logistics Support"
+            "title": "Gibbs Freightliner Tractor Unit"
+        },
+        {
+            "url": "/images/FullSizeRender.jpeg",
+            "title": "Rail King Transport - Landoll 440 Flatbed"
+        },
+        {
+            "url": "/images/FullSizeRender_1_.jpeg",
+            "title": "Rail King Equipment - Secured for Transport"
+        },
+        {
+            "url": "/images/FullSizeRender_2_.jpeg",
+            "title": "Gibbs Truck Hauling Rail King - Night Ops"
+        },
+        {
+            "url": "/images/FullSizeRender_3_.jpeg",
+            "title": "Rail King Heavy Equipment - Front View"
+        },
+        {
+            "url": "/images/FullSizeRender_4_ (1).jpeg",
+            "title": "Rail King Vehicle - Urban Night Recovery"
+        },
+        {
+            "url": "/images/FullSizeRender_5_.jpeg",
+            "title": "Heavy Equipment Flatbed Transport"
         }
     ]
 }

@@ -35,7 +35,7 @@ const StructuredData = () => {
     "@context": "https://schema.org",
     "@type": "AutoTowingService",
     "name": BRAND.name,
-    "image": "https://images.unsplash.com/photo-1605218427368-35b0185e4d2e?q=80&w=1200",
+    "image": "/images/FullSizeRender_2_.jpeg",
     "telephone": BRAND.phone,
     "address": {
       "@type": "PostalAddress",
@@ -203,9 +203,9 @@ const HeroImage = () => {
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        src="/images/gibbs-hero-truck.png"
+        src="/images/FullSizeRender_2_.jpeg"
         alt="Gibbs Heavy-Duty Tow Truck"
-        className={`absolute right-0 top-1/2 -translate-y-1/2 h-[70%] w-auto object-contain transition-opacity duration-1000 ${loaded ? 'opacity-90' : 'opacity-0'}`}
+        className={`absolute right-0 top-1/2 -translate-y-1/2 h-full w-full object-cover transition-opacity duration-1000 ${loaded ? 'opacity-60' : 'opacity-0'}`}
         onLoad={() => setLoaded(true)}
       />
       {/* Dramatic lighting overlay */}
