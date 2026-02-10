@@ -26,24 +26,22 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose, onUpdate, curr
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        setImages(currentImages);
-    }, [currentImages]);
-
-    useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
-            // Load saved images from localStorage
+            // Load saved images from localStorage, fall back to props
             const savedImages = localStorage.getItem('gibbs-fleet-images');
             if (savedImages) {
                 try {
                     const parsed = JSON.parse(savedImages);
                     if (Array.isArray(parsed) && parsed.length > 0) {
                         setImages(parsed);
+                        return;
                     }
                 } catch (e) {
                     console.log('Using default images');
                 }
             }
+            setImages(currentImages);
         } else {
             document.body.style.overflow = 'unset';
             setAuthenticated(false);

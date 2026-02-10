@@ -123,7 +123,7 @@ const Nav: React.FC<{ darkMode: boolean; toggleTheme: () => void; onOpenGallery:
         >
           <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="hover:text-red-600 transition-colors">Capability</a>
           <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="hover:text-red-600 transition-colors">Services</a>
-          <button onClick={handleGalleryClick} className="hover:text-red-600 transition-colors flex items-center gap-1">Our Fleet</button>
+          <button onClick={handleGalleryClick} className="hover:text-red-600 transition-colors flex items-center gap-1">OUR FLEET</button>
           <a href="#locations" onClick={(e) => handleNavClick(e, 'locations')} className="hover:text-red-600 transition-colors">Coverage</a>
           <a href="#faq" onClick={(e) => handleNavClick(e, 'faq')} className="hover:text-red-600 transition-colors">FAQ</a>
 
