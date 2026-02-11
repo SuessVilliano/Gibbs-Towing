@@ -35,7 +35,7 @@ const StructuredData = () => {
     "@context": "https://schema.org",
     "@type": "AutoTowingService",
     "name": BRAND.name,
-    "image": "/images/FullSizeRender_2_.jpeg",
+    "image": "/images/gibbs-hero-truck.png",
     "telephone": BRAND.phone,
     "address": {
       "@type": "PostalAddress",
@@ -203,7 +203,7 @@ const HeroImage = () => {
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        src="/images/FullSizeRender_2_.jpeg"
+        src="/images/gibbs-hero-truck.png"
         alt="Gibbs Heavy-Duty Tow Truck"
         className={`absolute right-0 top-1/2 -translate-y-1/2 h-full w-full object-cover transition-opacity duration-1000 ${loaded ? 'opacity-60' : 'opacity-0'}`}
         onLoad={() => setLoaded(true)}
