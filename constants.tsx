@@ -51,11 +51,14 @@ export const FAQS = [
 ];
 
 export const FLEET_IMAGES: GalleryImage[] = [
-  { url: "https://images.unsplash.com/photo-1605218427368-35b0185e4d2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", title: "Heavy Logistics Fleet" },
-  { url: "https://images.unsplash.com/photo-1596525725091-64d50c60815e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", title: "Commercial Recovery" },
-  { url: "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", title: "Supply Chain Recovery" },
-  { url: "https://images.unsplash.com/photo-1588625997631-f1945db5977a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", title: "Advanced Rotator Systems" },
-  { url: "https://images.unsplash.com/photo-1501700493788-fa1a4fc9fe2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", title: "Nationwide Transport" },
-  { url: "https://images.unsplash.com/photo-1626868840292-669c5e552c65?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", title: "Command & Control" },
-  { url: "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", title: "Operations HQ" }
+  { url: "/images/gibbs-truck-1.png", title: "Gibbs Fleet - Commercial Bus Recovery" },
+  { url: "/images/gibbs-truck-2.png", title: "Gibbs Light-Duty Wrecker - Night Operations" },
+  { url: "/images/gibbs-truck-3.png", title: "Gibbs Heavy-Duty Wrecker Unit" },
+  { url: "/images/gibbs-truck-4.png", title: "Gibbs Freightliner Tractor Unit" },
+  { url: "/images/FullSizeRender.jpeg", title: "Rail King Transport - Landoll 440 Flatbed" },
+  { url: "/images/FullSizeRender_1_.jpeg", title: "Rail King Equipment - Secured for Transport" },
+  { url: "/images/FullSizeRender_2_.jpeg", title: "Gibbs Truck Hauling Rail King - Night Ops" },
+  { url: "/images/FullSizeRender_3_.jpeg", title: "Rail King Heavy Equipment - Front View" },
+  { url: "/images/FullSizeRender_4_ (1).jpeg", title: "Rail King Vehicle - Urban Night Recovery" },
+  { url: "/images/FullSizeRender_5_.jpeg", title: "Heavy Equipment Flatbed Transport" }
 ];
