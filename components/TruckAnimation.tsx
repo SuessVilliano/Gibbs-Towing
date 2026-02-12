@@ -4,21 +4,17 @@ import { motion } from 'framer-motion';
 
 const TruckAnimation: React.FC = () => {
   return (
-    <div className="relative w-full h-32 overflow-hidden bg-zinc-950 border-t border-white/5">
-      {/* Background Pattern - GIBBS text */}
-      <div className="absolute inset-0 flex items-center justify-around opacity-[0.03] select-none pointer-events-none overflow-hidden">
-        {[...Array(6)].map((_, i) => (
-          <span key={i} className="font-brand font-black text-6xl italic uppercase text-white whitespace-nowrap">GIBBS</span>
-        ))}
-      </div>
+    <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none h-16 sm:h-20 overflow-hidden">
+      {/* Subtle road line */}
+      <div className="absolute bottom-2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-600/20 to-transparent"></div>
 
-      {/* Single Truck Rolling Animation */}
+      {/* Rolling Truck */}
       <motion.div
-        className="absolute top-1/2 -translate-y-1/2 h-24"
-        initial={{ x: '-100%' }}
+        className="absolute bottom-1 h-12 sm:h-16"
+        initial={{ x: '-150px' }}
         animate={{ x: '100vw' }}
         transition={{
-          duration: 12,
+          duration: 14,
           repeat: Infinity,
           ease: 'linear',
         }}
@@ -26,12 +22,9 @@ const TruckAnimation: React.FC = () => {
         <img
           src="/images/gibbs-hero-truck.png"
           alt="Gibbs Heavy Duty Wrecker"
-          className="h-full w-auto object-contain drop-shadow-2xl"
+          className="h-full w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] opacity-80"
         />
       </motion.div>
-
-      {/* Road Line */}
-      <div className="absolute bottom-4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-600/30 to-transparent"></div>
     </div>
   );
 };
