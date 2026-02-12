@@ -506,7 +506,6 @@ const Footer: React.FC = () => {
           </p>
         </div>
       </div>
-      <TruckAnimation />
     </footer>
   );
 };
@@ -625,6 +624,7 @@ function App() {
         </section>
       </main>
       <Footer />
+      <TruckAnimation />
       <ChatBot />
       <FleetGallery isOpen={galleryOpen} onClose={() => setGalleryOpen(false)} images={fleetImages} />
       <AdminPanel
