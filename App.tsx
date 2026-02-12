@@ -205,7 +205,7 @@ const HeroImage = () => {
         transition={{ duration: 1.2, ease: "easeOut" }}
         src="/images/gibbs-hero-truck.png"
         alt="Gibbs Heavy-Duty Tow Truck"
-        className={`absolute right-0 top-1/2 -translate-y-1/2 h-full w-full object-cover transition-opacity duration-1000 ${loaded ? 'opacity-60' : 'opacity-0'}`}
+        className={`absolute right-0 top-0 h-full w-full object-cover object-top transition-opacity duration-1000 ${loaded ? 'opacity-60' : 'opacity-0'}`}
         onLoad={() => setLoaded(true)}
       />
       {/* Dramatic lighting overlay */}
